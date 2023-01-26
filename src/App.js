@@ -28,6 +28,18 @@ async function testDownload() {
   console.log(JSON.stringify(testDLall));
 }
 
+async function testUpdate() {
+  await fetch(`${'http://localhost:4000'}/guests/1`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ attending: true }),
+  });
+}
+
+async function testErase() {
+  await fetch(`${'http://localhost:4000'}/guests/1`, { method: 'DELETE' });
+}
+
 export default function App() {
   return (
     <div>
@@ -35,8 +47,13 @@ export default function App() {
         First Name:
         <input type="text" value />
       </label> */}
-      <button onClick={testUpload}>TESTUPLOAD</button>
+      <button onClick={testUpload}>TESTUPLOAD</button> <br />
       <button onClick={testDownload}>TESTDOWNLOAD</button>
+      <br />
+      <button onClick={testUpdate}>TESTUPDATE</button>
+      <br />
+      <button onClick={testErase}>TESTERASE</button>
+      <br />
     </div>
   );
 }
