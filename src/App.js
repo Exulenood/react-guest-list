@@ -1,59 +1,86 @@
 import React, { useState } from 'react';
+import AddGuests from './addGuests';
 
-const guest = [
+const initGuests = [
   {
-    id: '01',
-    firstName: 'Pepel',
-    lastName: 'Bair',
+    id: 'A',
+    firstName: 'Raistlin',
+    lastName: 'Majere',
+    attending: false,
+  },
+  {
+    id: 'B',
+    firstName: 'Drizzt',
+    lastName: 'DoUrden',
     attending: false,
   },
 ];
 
-async function testUpload() {
-  await fetch(`${'http://localhost:4000'}/guests`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      firstName: 'Aaron',
-      lastName: 'Zivzivicek',
-    }),
-  });
-}
+// async function testUpload() {
+//   await fetch(`${'http://localhost:4000'}/guests`, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       firstName: 'Aaron',
+//       lastName: 'Zivzivicek',
+//     }),
+//   });
+// }
 
-async function testDownload() {
-  const response = await fetch(`${'http://localhost:4000'}/guests`);
-  const testDLall = await response.json();
-  console.log(JSON.stringify(testDLall));
-}
+// async function testDownload() {
+//   const response = await fetch(`${'http://localhost:4000'}/guests`);
+//   const testDLall = await response.json();
+//   console.log(JSON.stringify(testDLall));
+// }
 
-async function testUpdate() {
-  await fetch(`${'http://localhost:4000'}/guests/1`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ attending: true }),
-  });
-}
+// async function testUpdate() {
+//   await fetch(`${'http://localhost:4000'}/guests/1`, {
+//     method: 'PUT',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify({ attending: true }),
+//   });
+// }
 
-async function testErase() {
-  await fetch(`${'http://localhost:4000'}/guests/1`, { method: 'DELETE' });
-}
+// async function testErase() {
+//   await fetch(`${'http://localhost:4000'}/guests/1`, { method: 'DELETE' });
+// }
 
 export default function App() {
+  const [guests, setGuests] = useState(initGuests);
+
   return (
-    <div>
-      {/* <label>
-        First Name:
-        <input type="text" value />
-      </label> */}
-      <button onClick={testUpload}>TESTUPLOAD</button> <br />
-      <button onClick={testDownload}>TESTDOWNLOAD</button>
-      <br />
-      <button onClick={testUpdate}>TESTUPDATE</button>
-      <br />
-      <button onClick={testErase}>TESTERASE</button>
-      <br />
-    </div>
+    <>
+      <AddGuests />
+      <h1>GUEST LIST</h1>
+      {guests.map((guest) => {
+        return (
+          <div key={guest.id}>
+            <h3>{`${guest.firstName} ${guest.lastName}`}</h3>
+            is attending:
+            <input type="checkbox" />
+            <br />
+            <button aria-label={`Remove ${guest.firstName} ${guest.lastName}`}>
+              X
+            </button>
+          </div>
+        );
+      })}
+    </>
   );
 }
+// const guest = guests[0];
+
+// {guests.map((guest) => {
+//   return (
+//     <div key={guest.id}>
+//       <h3>{`${guest.firstName} ${guest.lastName}`}</h3>
+//       is attending: <input type="checkbox"/>
+//       <br />
+//       <button aria-label={`Remove ${guest.firstName} ${guest.lastName}`}>
+//         X
+//       </button>{' '}
+//     </div>
+//   );
+// })});
