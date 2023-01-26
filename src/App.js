@@ -2,19 +2,34 @@ import React, { useState } from 'react';
 
 const guest = [
   {
+    id: '01',
     firstName: 'Pepel',
-    secondName: 'Bair',
+    lastName: 'Bair',
     attending: false,
   },
 ];
 
+async function testUpload() {
+  await fetch(`${'http://localhost:4000'}/guests`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      firstName: 'Aaron',
+      lastName: 'Zivzivicek',
+    }),
+  });
+}
+
 export default function App() {
   return (
     <div>
-      <label>
+      {/* <label>
         First Name:
         <input type="text" value />
-      </label>
+      </label> */}
+      <button onClick={testUpload}>TEST</button>
     </div>
   );
 }
