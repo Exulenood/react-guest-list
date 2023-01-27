@@ -8,12 +8,6 @@ const initGuests = [
     lastName: 'McGuestA',
     attending: false,
   },
-  {
-    id: 'B',
-    firstName: 'GuestB',
-    lastName: 'McGuestB',
-    attending: false,
-  },
 ];
 
 // async function testUpload() {
@@ -34,6 +28,15 @@ const initGuests = [
 //   const testDLall = await response.json();
 //   console.log(JSON.stringify(testDLall));
 // }
+// checkval,guestId
+async function guestUpdate(checkval, guestId) {
+  console.log(checkval, guestId);
+  await fetch(`${'http://localhost:4000'}/guests/${guestId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ attending: checkval }),
+  });
+}
 
 // async function testUpdate() {
 //   await fetch(`${'http://localhost:4000'}/guests/1`, {
@@ -49,6 +52,9 @@ const initGuests = [
 
 export default function App() {
   const [guests, setGuests] = useState(initGuests);
+  const [refresh, setRefresh] = useState(false);
+
+  // const [checkboxDefault, setcheckboxDefault] = useState(false)
   // const [upDate, setUbdate] = useState(true);
 
   useEffect(() => {
@@ -59,7 +65,7 @@ export default function App() {
       setGuests(guestData);
     }
     getGuests().catch((error) => console.log(error));
-  }, []);
+  }, [refresh]);
 
   return (
     <>
@@ -70,7 +76,15 @@ export default function App() {
           <div key={guest.id}>
             <h3>{`${guest.firstName} ${guest.lastName}`}</h3>
             is attending:
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              aria-label={`${guest.firstName} ${guest.lastName} attending:${guest.attending}`}
+              checked={guest.attending}
+              onChange={(event) =>
+                guestUpdate(event.currentTarget.checked, guest.id)
+              }
+              onClick={() => setRefresh(!refresh)}
+            />
             <br />
             <button aria-label={`Remove ${guest.firstName} ${guest.lastName}`}>
               X
