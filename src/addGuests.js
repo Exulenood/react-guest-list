@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function AddGuests() {
+export default function AddGuests(props) {
   const addGuestTemplate = [
     {
       id: '',
@@ -22,6 +22,7 @@ export default function AddGuests() {
           lastName: addNewGuest[0].lastName,
         }),
       });
+      props.refreshGuests(addNewGuest[0].firstName + addNewGuest[0].lastName);
       const bypass = [...addNewGuest];
       bypass[0].firstName = '';
       bypass[0].lastName = '';
@@ -42,6 +43,7 @@ export default function AddGuests() {
 
   return (
     <>
+      <h2>Add Guest here:</h2>
       <label htmlFor="firstN">First name:</label>
       <input
         id="firstN"
@@ -64,9 +66,6 @@ export default function AddGuests() {
         }}
         onKeyDown={(event) => addGuestPass(event.key)}
       />
-      <button onClick={() => console.log(JSON.stringify(addNewGuest))}>
-        TestJSON
-      </button>
     </>
   );
 }

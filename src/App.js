@@ -3,9 +3,9 @@ import AddGuests from './addGuests';
 
 const initGuests = [
   {
-    id: 'A',
-    firstName: 'GuestA',
-    lastName: 'McGuestA',
+    id: '',
+    firstName: 'LOADING...',
+    lastName: 'STAND BY',
     attending: false,
   },
 ];
@@ -45,7 +45,11 @@ async function guestUpdate(checkval, guestId) {
 //     body: JSON.stringify({ attending: true }),
 //   });
 // }
-
+async function purgeGuestServer(guestId) {
+  await fetch(`${'http://localhost:4000'}/guests/${guestId}`, {
+    method: 'DELETE',
+  });
+}
 // async function testErase() {
 //   await fetch(`${'http://localhost:4000'}/guests/1`, { method: 'DELETE' });
 // }
@@ -56,6 +60,10 @@ export default function App() {
 
   // const [checkboxDefault, setcheckboxDefault] = useState(false)
   // const [upDate, setUbdate] = useState(true);
+  function purgeGuest(guestId) {
+    setRefresh(!refresh);
+    purgeGuestServer(guestId);
+  }
 
   useEffect(() => {
     async function getGuests() {
@@ -69,8 +77,10 @@ export default function App() {
 
   return (
     <>
-      <AddGuests />
       <h1>GUEST LIST</h1>
+      <AddGuests refreshGuests={setRefresh} />
+
+      <h2>Invited:</h2>
       {guests.map((guest) => {
         return (
           <div key={guest.id}>
@@ -86,7 +96,10 @@ export default function App() {
               onClick={() => setRefresh(!refresh)}
             />
             <br />
-            <button aria-label={`Remove ${guest.firstName} ${guest.lastName}`}>
+            <button
+              aria-label={`Remove ${guest.firstName} ${guest.lastName}`}
+              onClick={() => purgeGuest(guest.id)}
+            >
               X
             </button>
           </div>
