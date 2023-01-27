@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddGuests from './addGuests';
 
 const initGuests = [
   {
     id: 'A',
-    firstName: 'Raistlin',
-    lastName: 'Majere',
+    firstName: 'GuestA',
+    lastName: 'McGuestA',
     attending: false,
   },
   {
     id: 'B',
-    firstName: 'Drizzt',
-    lastName: 'DoUrden',
+    firstName: 'GuestB',
+    lastName: 'McGuestB',
     attending: false,
   },
 ];
@@ -49,6 +49,17 @@ const initGuests = [
 
 export default function App() {
   const [guests, setGuests] = useState(initGuests);
+  // const [upDate, setUbdate] = useState(true);
+
+  useEffect(() => {
+    async function getGuests() {
+      const response = await fetch(`${'http://localhost:4000'}/guests`);
+      const guestData = await response.json();
+      console.log(JSON.stringify(guestData));
+      setGuests(guestData);
+    }
+    getGuests().catch((error) => console.log(error));
+  }, []);
 
   return (
     <>
